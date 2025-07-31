@@ -1,0 +1,18 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+@import 'variables';
+@import 'mixins';
+
+// Global styles
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.container {
+  @include responsive-container;
+}

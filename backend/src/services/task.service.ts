@@ -20,7 +20,7 @@ export class TaskService {
 
   static async updateTask(task: Task): Promise<void> {
     const { id, ...taskData } = task;
-    await db.collection('tasks').doc(id).update(taskData);
+    await db.collection('tasks').doc(id!).update(taskData);
   }
 
   static async deleteTask(taskId: string, userId: string): Promise<void> {

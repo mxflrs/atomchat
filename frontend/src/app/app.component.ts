@@ -6,8 +6,9 @@ import { RouterOutlet } from "@angular/router";
     standalone: true,
     imports: [RouterOutlet],
     templateUrl: "./app.component.html",
-    styleUrl: "./app.component.scss"
+    styleUrl: "../assets/styles/styles.scss"
 })
 export class AppComponent {
-    title = "atom-challenge-fe-template";
+    title = "Atom Chat Todo App";
+    year = new Date().getFullYear();
 }
