@@ -38,14 +38,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.api = void 0;
 const functions = __importStar(require("firebase-functions"));
-const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const auth_controller_1 = require("./controllers/auth.controller");
 const auth_middleware_1 = require("./middleware/auth.middleware");
 const task_controller_1 = require("./controllers/task.controller");
+const express_1 = __importDefault(require("express"));
+const dotenv = __importStar(require("dotenv"));
+dotenv.config();
+console.log('Environment JWT_SECRET:', process.env.JWT_SECRET);
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({ origin: true }));
 app.use(express_1.default.json());
+app.use((err, req, res, next) => {
+    console.error('Unhandled error:', err);
+    res.status(500).json({ error: 'Internal server error', details: err.message });
+});
 // Auth routes
 app.post('/auth/login', auth_controller_1.AuthController.login);
 app.post('/auth/register', auth_controller_1.AuthController.register);

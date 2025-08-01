@@ -9,6 +9,6 @@ import { RouterOutlet } from "@angular/router";
     styleUrl: "../assets/styles/styles.scss"
 })
 export class AppComponent {
-    title = "Atom Chat Todo App";
+    title = "Atom Chat - TODO App";
     year = new Date().getFullYear();
 }

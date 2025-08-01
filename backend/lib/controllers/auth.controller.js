@@ -36,6 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const auth_service_1 = require("../services/auth.service");
 const jwt = __importStar(require("jsonwebtoken"));
+const JWT_SECRET = "hlT8Gp5iuNjCq0LLTxjUDXKnGaxD9EzJfJf7rFgNrXA=";
 class AuthController {
     static async login(req, res) {
         try {
@@ -47,7 +48,7 @@ class AuthController {
             if (!user) {
                 return res.status(404).json({ error: 'User not found' });
             }
-            const token = jwt.sign({ uid: user.id }, process.env.JWT_SECRET, {
+            const token = jwt.sign({ uid: user.id }, JWT_SECRET, {
                 expiresIn: '1h',
             });
             res.json({ token });
@@ -63,7 +64,7 @@ class AuthController {
                 return res.status(400).json({ error: 'Email is required' });
             }
             const user = await auth_service_1.AuthService.createUser(email);
-            const token = jwt.sign({ uid: user.id }, process.env.JWT_SECRET, {
+            const token = jwt.sign({ uid: user.id }, JWT_SECRET, {
                 expiresIn: '1h',
             });
             res.status(201).json({ token });
