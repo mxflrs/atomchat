@@ -20,13 +20,20 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(email: string): Observable<boolean> {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/auth/login`, { email }).pipe(
-      tap((response) => this.setToken(response.token)),
-      map(() => true),
-      catchError(() => of(false))
-    );
-  }
+login(email: string): Observable<boolean> {
+  return this.http.post<{ token: string }>(`${this.apiUrl}/auth/login`, { email }).pipe(
+    tap((response) => {
+      console.log('✅ Received token:', response.token); // <--- Debug log here
+      this.setToken(response.token);
+    }),
+    map(() => true),
+    catchError((error) => {
+      console.error('❌ Login error:', error); // <--- Log errors too
+      return of(false);
+    })
+  );
+}
+
 
   register(email: string): Observable<boolean> {
     return this.http.post<{ token: string }>(`${this.apiUrl}/auth/register`, { email }).pipe(
@@ -39,14 +46,18 @@ export class AuthService {
     return localStorage.getItem(this.tokenKey);
   }
 
-  getCurrentUser(): string | null {
-    const token = this.getToken();
-    if (token) {
-      const decoded: JwtPayload = jwtDecode(token);
-      return decoded.email || null;
-    }
+getCurrentUser(): string | null {
+  const token = this.getToken();
+  if (!token) return null;
+
+  try {
+    const decoded: JwtPayload = jwtDecode(token);
+    return decoded.email || decoded.uid || 'anonymous';
+  } catch (e) {
+    console.error('❌ Invalid token or decode failed', e);
     return null;
   }
+}
 
   getCurrentUserId(): string | null {
     const token = this.getToken();

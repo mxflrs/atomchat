@@ -5,7 +5,7 @@ import { AuthGuard } from "../../core/guards/auth.guard";
 import { TasksComponent } from "./components/task/task.component";
 
 const routes: Routes = [
-    { path: "tasks", component: TasksComponent, canActivate: [AuthGuard] },
+    { path: "", component: TasksComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

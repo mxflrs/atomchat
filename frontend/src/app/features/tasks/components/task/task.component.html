@@ -15,8 +15,8 @@
       [ngClass]="{ 'opacity-50': task.completed }"
     >
       <mat-card-header>
-        <mat-card-title>{{ task.title }}</mat-card-title>
-        <mat-card-subtitle>{{ task.createdAt | date: 'short' }}</mat-card-subtitle>
+<mat-card-subtitle>{{ task.createdAt.toString()| date:'short' }}</mat-card-subtitle>
+
       </mat-card-header>
       <mat-card-content>
         <p>{{ task.description }}</p>

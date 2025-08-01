@@ -9,6 +9,7 @@ class TaskController {
             res.json(tasks);
         }
         catch (error) {
+            console.error('Failed to fetch tasks:', error);
             res.status(500).json({ error: 'Failed to fetch tasks' });
         }
     }
@@ -24,6 +25,7 @@ class TaskController {
             res.status(201).json(newTask);
         }
         catch (error) {
+            console.error('Failed to add task:', error);
             res.status(500).json({ error: 'Failed to add task' });
         }
     }
@@ -34,10 +36,11 @@ class TaskController {
                 id: req.params.id,
                 userId: req.user.uid,
             };
-            await task_service_1.TaskService.updateTask(task);
-            res.json(task);
+            const updatedTask = await task_service_1.TaskService.updateTask(task);
+            res.json(updatedTask);
         }
         catch (error) {
+            console.error('Failed to update task:', error);
             res.status(500).json({ error: 'Failed to update task' });
         }
     }
@@ -47,6 +50,7 @@ class TaskController {
             res.status(204).send();
         }
         catch (error) {
+            console.error('Failed to delete task:', error);
             res.status(500).json({ error: 'Failed to delete task' });
         }
     }

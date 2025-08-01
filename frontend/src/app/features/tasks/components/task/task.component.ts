@@ -7,6 +7,9 @@ import { TaskService } from "../../../../core/services/tasks.services";
 import { AuthService } from "../../../../core/services/auth.services";
 import { TaskFormDialogComponent } from "../task-form-dialog/task-form-dialog.component";
 
+export function isFirestoreTimestamp(value: any): value is { _seconds: number; _nanoseconds: number } {
+  return value && typeof value === 'object' && '_seconds' in value;
+}
 @UntilDestroy()
 @Component({
     selector: "app-tasks",
@@ -27,16 +30,29 @@ export class TasksComponent implements OnInit {
         this.loadTasks();
     }
 
-    loadTasks(): void {
-        this.taskService.getTasks().pipe(untilDestroyed(this)).subscribe({
-            next: (tasks) => {
-                this.tasks = tasks.sort(
-                    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-                );
-            },
-            error: (err) => console.error("Failed to load tasks", err),
-        });
-    }
+loadTasks(): void {
+this.taskService.getTasks().pipe(untilDestroyed(this)).subscribe({
+next: (tasks) => {
+this.tasks = tasks.map(task => {
+  let createdAtDate: Date;
+
+  if (isFirestoreTimestamp(task.createdAt)) {
+    createdAtDate = new Date(task.createdAt._seconds * 1000);
+  } else {
+    createdAtDate = new Date(task.createdAt); // works for ISO string or Date
+  }
+
+  return {
+    ...task,
+    createdAt: createdAtDate,
+  };
+});
+},
+  error: (err) => console.error("Failed to load tasks", err),
+});
+}
+
+
 
     addTask(): void {
         this.dialog

@@ -1,8 +1,8 @@
 export interface Task {
-    id?: string;
-    title: string;
-    description: string;
-    createdAt: string;
-    completed: boolean;
-    userEmail: string;
+  id?: string;
+  title: string;
+  description: string;
+  createdAt: Date | { _seconds: number; _nanoseconds: number };
+  completed: boolean;
+  userEmail: string;
 }
